@@ -54,8 +54,10 @@
   /* feeds context menu */
   --feeds-contextMenu-background-color: var(--main-background-color);
   --feeds-folderContextMenuCheckFeeds-image: url(/themes/sage_sc_dark/img/check-feeds.png);
-  --feeds-folderContextMenuMarkAllAsRead-image: url(/themes/sage_sc_dark/img/feed-read.png);
-  --feeds-folderContextMenuMarkAllAsUpdated-image: url(/themes/sage_sc_dark/img/feed-unread.png);
+  --feeds-folderContextMenuMarkAsRead-image: url(/themes/sage_sc_dark/img/feed-read.png);
+  --feeds-folderContextMenuMarkAsUpdated-image: url(/themes/sage_sc_dark/img/feed-unread.png);
+  --feeds-folderContextMenuMarkAllAsRead-image: url(/themes/sage_sc_dark/img/feed-read-all.png);
+  --feeds-folderContextMenuMarkAllAsUpdated-image: url(/themes/sage_sc_dark/img/feed-unread-all.png);
   --feeds-folderContextMenuOpenAllUpdated-image: url(/themes/sage_sc_dark/img/feed-open.png);
   --feeds-folderContextMenuOpenUpdatedAsUnified-image: url(/themes/sage_sc_dark/img/merge.png);
   --feeds-folderContextMenuSortByName-image: url(/themes/sage_sc_dark/img/sort.png);
@@ -66,6 +68,8 @@
   --feeds-feedContextMenuOpenFeed-image: url(/themes/sage_sc_dark/img/feed-open.png);
   --feeds-feedContextMenuMarkFeedAsRead-image: url(/themes/sage_sc_dark/img/feed-read.png);
   --feeds-feedContextMenuMarkFeedAsUpdated-image: url(/themes/sage_sc_dark/img/feed-unread.png);
+  --feeds-feedContextMenuMarkAllAsRead-image: url(/themes/sage_sc_dark/img/feed-read-all.png);
+  --feeds-feedContextMenuMarkAllAsUpdated-image: url(/themes/sage_sc_dark/img/feed-unread-all.png);
   --feeds-feedContextMenuNew-image: url(/themes/sage_sc_dark/img/folder-new.png);
   --feeds-feedContextMenuDelete-image: url(/themes/sage_sc_dark/img/delete.png);
   --feeds-feedContextMenuInfo-image: url(/themes/sage_sc_dark/img/feed-info.png);
@@ -77,7 +81,7 @@
   /* items title bar*/
   --items-Title-background-color: var(--main-background-color);
   --items-Title-border-color: var(--main-border-color);
-  --items-Title-color: #444444;
+  --items-Title-color: var(--main-text-color);
   /* items tool bar*/
   --items-ToolBar-background-color: var(--main-background-color);
   --items-ToolBar-border-color: var(--main-border-color);
@@ -96,13 +100,6 @@
   --items-selectionBar-color: var(--feeds-selectionBar-color);
   /* --- Item render layout ---- */
   --renderItems-Layout-background-color: var(--main-background-color);
-  /* ---- dialog box ---- */
-  --dialog-background-color: var(--main-dialog-background-color);
-  --dialog-border-color: var(--main-border-color);
-  ;
-  --dialog-title-color: var(--main-text-color);
-  --dialog-title-background-color: black;
-  --dialog-label-color: var(--main-text-color);
   /* ---- misc. ---- */
   --main-dropTarget-color: gray;
 }

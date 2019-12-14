@@ -59,14 +59,23 @@
   "sbMarkAllAsUnread": {
     "message": "Alle als ungelesen markieren"
   },
-  "sbOpenUnreadItemsInNewTabs": {
+  "sbMarkArticleAsRead": {
+    "message": "Als gelesen markieren"
+  },
+  "sbMarkArticleAsUnread": {
+    "message": "Als ungelesen markieren"
+  },
+  "sbMarkAllArticlesAsRead": {
+    "message": "Alle als gelesen markieren"
+  },
+  "sbMarkAllArticlesAsUnread": {
+    "message": "Alle als ungelesen markieren"
+  },
+  "sbOpenUnreadArticlesInNewTabs": {
     "message": "Öffne ungelesene items in neuen Tabs"
   },
   "sbItemHideReadArticles": {
     "message": "Hide read articles"
-  },
-  "sbMarkAllAsUpdated": {
-    "message": "Alle als aktualisiert markieren"
   },
   "sbOpenUpdatedFeeds": {
     "message": "Öffne aktualisierte Feeds"
@@ -287,6 +296,12 @@
   "optSelectRenderTheme": {
     "message": "Render Tab Theme auswählen"
   },
+  "optOpenCustomThemeManager": {
+    "message": "Open custom theme manager"
+  },
+  "optThemeManager": {
+    "message": "Custom theme manager..."
+  },
   "optFeedItemOrder": {
     "message": "Feed item Ordner"
   },
@@ -319,6 +334,9 @@
   },
   "optShowNotifications": {
     "message": "Zeige Benachrichtigungsfenster nach Aktualisierungen an"
+  },
+  "optDontShowNotificationsIfZero": {
+    "message": "Don't notify if no feed has been updated"
   },
   "optRetryWithHttp": {
     "message": "Wenn https fehlgeschlagen ist, erneut mit http versuchen"
@@ -374,16 +392,40 @@
   "optUrlDatetimeHelp": {
     "message": "Date time formats (see section 'Options')"
   },
+  "optContentsAreaAdvLegend": {
+    "message": "Advanced"
+  },
+  "optHandlesFeedTabCheckbox": {
+    "message": "Handle RSS, ATOM, ... feed tabs with Drop Feeds"
+  },
+  "optPreventOpenWith": {
+    "message": "Prevent Open With dialog displaying (*)"
+  },
+  "optWarningPreventOpenWith": {
+    "message": "(*) warning: with this option activated you can get a wierd behavior on some web pages"
+  },
   "optSelectOpmlFileToImport": {
     "message": "Wähle die zu importierende opml-Datei aus"
   },
-  "optImport": {
+  "optOpmlImport": {
     "message": "Importieren..."
   },
   "optSelectOpmlFileToExport": {
     "message": "Wähle, wohin die opml-Datei exportiert werden soll"
   },
-  "optExport": {
+  "optOpmlExport": {
+    "message": "Exportieren..."
+  },
+  "optSelectSettingFileToImport": {
+    "message": "Wähle die zu importierende setting-Datei aus"
+  },
+  "optSettingImport": {
+    "message": "Importieren..."
+  },
+  "optSelectSettingFileToExport": {
+    "message": "Wähle, wohin die setting-Datei exportiert werden soll"
+  },
+  "optSettingExport": {
     "message": "Exportieren..."
   },
   "optAdvanced": {
@@ -403,6 +445,24 @@
   },
   "optSecurityFilterSettings": {
     "message": "Sicherheitsfiltereinstellungen"
+  },
+  "optLblDebugView": {
+    "message": "Open the debug view"
+  },
+  "optDebugViewButton": {
+    "message": "Debug view..."
+  },
+  "optLblFullExport": {
+    "message": "Full export"
+  },
+  "opFullExportButton": {
+    "message": "Export every thing..."
+  },
+  "optLblFullImport": {
+    "message": "Full import"
+  },
+  "optFullImportButton": {
+    "message": "Import every thing..."
   },
   "optMessageDialogTitle": {
     "message": "Nachricht"
@@ -644,6 +704,9 @@
   "usUScriptTabSize": {
     "message": "Tab Größe"
   },
+  "usUScriptTheme": {
+    "message": "Theme"
+  },
   "comment13": {
     "message": "------------------Editor console strings------------------"
   },
@@ -727,5 +790,65 @@
         "content": "$2"
       }
     }
+  },
+  "comment15": {
+    "message": "------------------ Custom theme manager ------------------"
+  },
+  "cthTitleCustomThemeManager": {
+    "message": "Custom theme manager"
+  },
+  "cthImportThemeCustom": {
+    "message": "Import a custom theme..."
+  },
+  "cthLegendMainThemeCustom": {
+    "message": "Main custom theme"
+  },
+  "cthLegendRenderTemplateCustom": {
+    "message": "Render tab custom template"
+  },
+  "cthLegendRenderThemeCustom": {
+    "message": "Render tab custom theme"
+  },
+  "cthLegendScriptEditorThemeCustom": {
+    "message": "Script editor custom theme"
+  },
+  "cthApplyTheme": {
+    "message": "Apply"
+  },
+  "cthRenameTheme": {
+    "message": "Rename"
+  },
+  "cthDeleteTheme": {
+    "message": "Delete"
+  },
+  "cthExportMainThemeCustom": {
+    "message": "Export as custom main theme..."
+  },
+  "cthExportRenderTemplateCustom": {
+    "message": "Export as custom tab template theme..."
+  },
+  "cthExportRenderThemeCustom": {
+    "message": "Export as custom tab theme..."
+  },
+  "cthExportScriptEditorThemeCustom": {
+    "message": "Export as custom script editor theme"
+  },
+  "cthDiagRename": {
+    "message": "Rename"
+  },
+  "cthDiagNewName": {
+    "message": "New name:"
+  },
+  "cthDiagImport": {
+    "message": "Import"
+  },
+  "cthDiagThemeName": {
+    "message": "Theme name:"
+  },
+  "cthDiagOk": {
+    "message": "Ok"
+  },
+  "cthDiagCancel": {
+    "message": "Cancel"
   }
 }

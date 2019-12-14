@@ -59,14 +59,23 @@
   "sbMarkAllAsUnread": {
     "message": "Segna tutto come non letto"
   },
-  "sbOpenUnreadItemsInNewTabs": {
+  "sbMarkArticleAsRead": {
+    "message": "Segna come già letto"
+  },
+  "sbMarkArticleAsUnread": {
+    "message": "Segna come non letto"
+  },
+  "sbMarkAllArticlesAsRead": {
+    "message": "Segna tutto come già letto"
+  },
+  "sbMarkAllArticlesAsUnread": {
+    "message": "Segna tutto come non letto"
+  },
+  "sbOpenUnreadArticlesInNewTabs": {
     "message": "Apri gli elementi non letti in nuove schede"
   },
   "sbItemHideReadArticles": {
-    "message": "Hide read articles"
-  },
-  "sbMarkAllAsUpdated": {
-    "message": "Marca tutti come aggiornati"
+    "message": "Nascondi gli articoli già letti"
   },
   "sbOpenUpdatedFeeds": {
     "message": "Apri i feed aggiornati"
@@ -123,7 +132,7 @@
     "message": "caricato"
   },
   "sbLoadingNextFeed": {
-    "message": "Loading next feed..."
+    "message": "Caricando il feed successivo..."
   },
   "sbMerging": {
     "message": "Unendo"
@@ -135,7 +144,7 @@
     "message": "ricevuto"
   },
   "sbWaitingNextFeed": {
-    "message": "Wainting for next feed..."
+    "message": "In attesa del feed successivo..."
   },
   "sbFeedsUpdated": {
     "message": "feeds aggiornati"
@@ -186,7 +195,7 @@
     "message": "Nuova cartella"
   },
   "subWindowCloseError": {
-    "message": "Drop feeds ha sbagliato a chiudere la finestra, chiuderla a mano"
+    "message": "Drop feeds non è riuscito a chiudere la finestra, chiuderla a mano"
   },
   "subCancel": {
     "message": "Cancella"
@@ -282,10 +291,16 @@
     "message": "Seleziona il tema principale"
   },
   "optSelectRenderTemplate": {
-    "message": "Seleziona il template per la rappresentazione della scheda"
+    "message": "Seleziona il template per la visualizzazione della scheda"
   },
   "optSelectRenderTheme": {
-    "message": "Seleziona il tema per la rappresentazione della scheda"
+    "message": "Seleziona il tema per la visualizzazione della scheda"
+  },
+  "optOpenCustomThemeManager": {
+    "message": "Apri il gestore dei temi personalizzati"
+  },
+  "optThemeManager": {
+    "message": "Gestore temi personalizzati..."
   },
   "optFeedItemOrder": {
     "message": "Ordine dei feed"
@@ -320,6 +335,9 @@
   "optShowNotifications": {
     "message": "Mostra una notifica al termine dell'aggiornamento"
   },
+  "optDontShowNotificationsIfZero": {
+    "message": "Don't notify if no feed has been updated"
+  },
   "optRetryWithHttp": {
     "message": "Se https fallisce riprova con http"
   },
@@ -333,7 +351,7 @@
     "message": "Mostra una breve descrizione (tooltip)"
   },
   "optNavigationHistoryWarning": {
-    "message": "(*) attenzione: segnando i feed come letti/non letti impatta sullo storico di navigazione !"
+    "message": "(*) attenzione: segnando i feed come letti/non letti impatta sullo storico di navigazione!"
   },
   "optFeedItemMarkAsReadOnLeaving": {
     "message": "Marca tutti gli elementi come già letti prima di uscire da feeds"
@@ -351,7 +369,7 @@
     "message": "Mostra feeds"
   },
   "optRenderFeedsOptions": {
-    "message": "Options"
+    "message": "Opzioni"
   },
   "optItemNewTab": {
     "message": "Apri gli elementi in una nuova scheda"
@@ -366,24 +384,48 @@
     "message": "Riutilizza la scheda di Drop Feed"
   },
   "optContentsDateTimeLegend": {
-    "message": "Date time format"
+    "message": "Formato data/ora"
   },
   "optContentsDateTimeResetButton": {
-    "message": "Reset to default"
+    "message": "Ripristina"
   },
   "optUrlDatetimeHelp": {
-    "message": "Date time formats (see section 'Options')"
+    "message": "Formato data/ora (vedi sezione 'Opzioni')"
+  },
+  "optContentsAreaAdvLegend": {
+    "message": "Avanzate"
+  },
+  "optHandlesFeedTabCheckbox": {
+    "message": "Gestisci le schede di feed RSS, ATOM,... con  Drop Feeds"
+  },
+  "optPreventOpenWith": {
+    "message": "Evita l'apertura della finestra di dialogo (*)"
+  },
+  "optWarningPreventOpenWith": {
+    "message": "(*) attenzione: questa opzione potrebbe causare un comportamento anomalo su alcune pagine"
   },
   "optSelectOpmlFileToImport": {
     "message": "Seleziona il file opml da importare"
   },
-  "optImport": {
+  "optOpmlImport": {
     "message": "Importa..."
   },
   "optSelectOpmlFileToExport": {
     "message": "Seleziona dove esportare il file opml"
   },
-  "optExport": {
+  "optOpmlExport": {
+    "message": "Esporta..."
+  },
+  "optSelectSettingFileToImport": {
+    "message": "Seleziona il file di impostazioni da importare"
+  },
+  "optSettingImport": {
+    "message": "Importa..."
+  },
+  "optSelectSettingFileToExport": {
+    "message": "Seleziona dove esportare il file di impostazioni"
+  },
+  "optSettingExport": {
     "message": "Esporta..."
   },
   "optAdvanced": {
@@ -403,6 +445,24 @@
   },
   "optSecurityFilterSettings": {
     "message": "Impostazioni dei filtri di sicurezza..."
+  },
+  "optLblDebugView": {
+    "message": "Apri la finestra di debug"
+  },
+  "optDebugViewButton": {
+    "message": "Finestra di debug..."
+  },
+  "optLblFullExport": {
+    "message": "Esportazione Completa"
+  },
+  "opFullExportButton": {
+    "message": "Esporta tutto..."
+  },
+  "optLblFullImport": {
+    "message": "Importazione Completa"
+  },
+  "optFullImportButton": {
+    "message": "Importa tutto..."
   },
   "optMessageDialogTitle": {
     "message": "Messaggio"
@@ -644,6 +704,9 @@
   "usUScriptTabSize": {
     "message": "Dimensione Tab"
   },
+  "usUScriptTheme": {
+    "message": "Tema"
+  },
   "comment13": {
     "message": "------------------Editor console strings------------------"
   },
@@ -727,5 +790,65 @@
         "content": "$2"
       }
     }
+  },
+  "comment15": {
+    "message": "------------------ Custom theme manager ------------------"
+  },
+  "cthTitleCustomThemeManager": {
+    "message": "Gestore temi personalizzati"
+  },
+  "cthImportThemeCustom": {
+    "message": "Importa un tema personalizzato..."
+  },
+  "cthLegendMainThemeCustom": {
+    "message": "Tema principale"
+  },
+  "cthLegendRenderTemplateCustom": {
+    "message": "Template personalizzato della scheda di visualizzazione"
+  },
+  "cthLegendRenderThemeCustom": {
+    "message": "Tema personalizzato della scheda di visualizzazione"
+  },
+  "cthLegendScriptEditorThemeCustom": {
+    "message": "Tema dell'editor degli script"
+  },
+  "cthApplyTheme": {
+    "message": "Applica"
+  },
+  "cthRenameTheme": {
+    "message": "Rinonima"
+  },
+  "cthDeleteTheme": {
+    "message": "Elimina"
+  },
+  "cthExportMainThemeCustom": {
+    "message": "Esporta come tema personalizzato principale..."
+  },
+  "cthExportRenderTemplateCustom": {
+    "message": "Esporta come template di visualizzazione della scheda personalizzato..."
+  },
+  "cthExportRenderThemeCustom": {
+    "message": "Esporta come tema di visualizzazione della scheda personalizzato..."
+  },
+  "cthExportScriptEditorThemeCustom": {
+    "message": "Export come tema personalizzato dell'editor di script"
+  },
+  "cthDiagRename": {
+    "message": "Rinomina"
+  },
+  "cthDiagNewName": {
+    "message": "Nuovo nome:"
+  },
+  "cthDiagImport": {
+    "message": "Importa"
+  },
+  "cthDiagThemeName": {
+    "message": "Nome del tema:"
+  },
+  "cthDiagOk": {
+    "message": "Ok"
+  },
+  "cthDiagCancel": {
+    "message": "Cancella"
   }
 }

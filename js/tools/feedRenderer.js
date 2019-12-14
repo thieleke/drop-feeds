@@ -2,10 +2,10 @@
 'use strict';
 class FeedRenderer { /*exported FeedRenderer*/
 
-  static async renderFeedToHtml_async(feedText, defaultTitle, isError) {
+  static async renderFeedToHtml_async(feedText, defaultTitle, isError, subscribeButtonTarget) {
     let feedInfo = await FeedParser.getFeedInfo_async(feedText, defaultTitle, isError);
-    //let feedHtml = FeedRenderer._feedInfoToHtml(feedInfo);
-    let feedHtml = FeedTransform.transformFeedToHtml_async(feedInfo);
+    //let feedHtml = await FeedRenderer._feedInfoToHtml_async(feedInfo);
+    let feedHtml = await FeedTransform.transformFeedToHtml_async(feedInfo, subscribeButtonTarget);
     return feedHtml;
   }
 
@@ -53,8 +53,8 @@ class FeedRenderer { /*exported FeedRenderer*/
 
   //private stuffs
 
-  static _feedInfoToHtml(feedInfo) {
-    let htmlHead = FeedRenderer._getHtmlHead(feedInfo.channel);
+  static async _feedInfoToHtml_async(feedInfo) {
+    let htmlHead = await FeedRenderer._getHtmlHead_async(feedInfo.channel);
     let feedHtml = '';
     feedHtml += htmlHead;
     feedHtml += FeedRenderer._getHtmlChannel(feedInfo.channel, feedInfo.isError);
@@ -69,10 +69,10 @@ class FeedRenderer { /*exported FeedRenderer*/
     return feedHtml;
   }
 
-  static _getHtmlHead(channel) {
+  static async _getHtmlHead_async(channel) {
     let iconUrl = browser.runtime.getURL(ThemeManager.instance.iconDF32Url);
-    let cssUrl1 = browser.runtime.getURL(ThemeManager.instance.getRenderCssTemplateUrl());
-    let cssUrl2 = browser.runtime.getURL(ThemeManager.instance.getRenderCssUrl());
+    let cssUrl1 = browser.runtime.getURL(await ThemeManager.instance.getRenderCssTemplateUrl_async());
+    let cssUrl2 = await browser.runtime.getURL(ThemeManager.instance.getRenderCssUrl_async());
     let encoding = 'utf-8'; // Conversion is now done in downloadTextFileEx_async()
     let htmlHead = '';
     htmlHead += '<html>\n';
@@ -153,15 +153,18 @@ class FeedRenderer { /*exported FeedRenderer*/
     if (!title) { title = '(No Title)'; }
     let target = BrowserManager.instance.alwaysOpenNewTab ? 'target="_blank"' : '';
     let num = itemNumber ? itemNumber : item.number;
-    let visited = undefined;
+    let visited = '';
     try {
       visited = (await BrowserManager.isVisitedLink_async(item.link)) ? ' visited visitedVisible' : '';
     }
-    catch (e) { }
+    catch (e) {
+      /*eslint-disable no-console*/
+      console.error(e);
+      /*eslint-enable no-console*/
+    }
     let tooltipText = FeedParser.getItemTooltipText(item, num);
     let tooltip = (tooltipsVisible ? 'title' : 'title1') + '="' + BrowserManager.htmlToText(tooltipText) + '"';
     let htmlItemLine = '<span class="item' + visited + '" ' + tooltip + '" ' + target + ' href="' + item.link + '" num="' + num + '">' + num + '. ' + title + '<br/></span>';
-
     return htmlItemLine;
   }
 }
