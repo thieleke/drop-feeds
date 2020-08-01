@@ -1,12 +1,12 @@
 :root {
   /* ---- feeds layout ---- */
-  --feeds-Layout-background-color: var(--main-background-secondary-color);
+  --feeds-Layout-background-color: var(--main-background-color);
   /* option menu */
   --feeds-optionMenuReload-image: url(/themes/legacy_dark/img/restart.png);
-  --feeds-optionMenuSubscribe-image: url(/themes/legacy_dark/img/subscribe-url.png);
+  --feeds-optionMenuSubscribe-image: url(/themes/legacy_dark/img/settings.png);
   --feeds-optionMenuSettings-image: url(/themes/legacy_dark/img/settings.png);
   /* feeds top menu */
-  --feeds-topMenu-background-color: var(--main-background-color);
+  --feeds-topMenu-background-color: var(--main-background-secondary-color);
   --feeds-topMenu-border-color: var(--main-border-color);
   --feeds-topMenu-image-width: 20px;
   --feeds-topMenu-image-height: 20px;
@@ -21,13 +21,13 @@
   --feeds-filterButton-image: url(/themes/legacy_dark/img/filter.png);
   --feeds-optionsMenuButton-image: url(/themes/legacy_dark/img/options.png);
   /* feeds status bar*/
-  --feeds-statusBar-background-color: var(--main-background-color);
+  --feeds-statusBar-background-color: var(--main-background-secondary-color);
   --feeds-statusBar-border-color: var(--main-border-color);
   --feeds-statusButtonUpdating-image: url(/themes/legacy_dark/img/updating.gif);
   --feeds-statusBar-image-width: 16px;
   --feeds-statusBar-image-height: 16px;
   /* feeds filter bar */
-  --feeds-filterBar-background-color: var(--main-background-color);
+  --feeds-filterBar-background-color: var(--main-background-secondary-color);
   --feeds-filterClearButton-image: url(/themes/_templates/img/filter-clean.png);
   /* feeds tree view folders */
   --feeds-folderOpen-image: url(/themes/legacy_dark/img/folder-open.png);
@@ -50,10 +50,12 @@
   --feeds-feedError-content: "";
   --feeds-feedError-color: var(--main-text-color);
   /* feeds context menu */
-  --feeds-contextMenu-background-color: var(--main-background-color);
+  --feeds-contextMenu-background-color: var(--main-background-secondary-color);
   --feeds-folderContextMenuCheckFeeds-image: url(/themes/legacy_dark/img/check-feeds.png);
-  --feeds-folderContextMenuMarkAllAsRead-image: url(/themes/legacy_dark/img/feed-read.png);
-  --feeds-folderContextMenuMarkAllAsUpdated-image: url(/themes/legacy_dark/img/feed-unread.png);
+  --feeds-folderContextMenuMarkAsRead-image: url(/themes/legacy_dark/img/feed-read.png);
+  --feeds-folderContextMenuMarkAsUpdated-image: url(/themes/legacy_dark/img/feed-unread.png);
+  --feeds-folderContextMenuMarkAllAsRead-image: url(/themes/legacy_dark/img/feed-read-all.png);
+  --feeds-folderContextMenuMarkAllAsUpdated-image: url(/themes/legacy_dark/img/feed-unread-all.png);
   --feeds-folderContextMenuOpenAllUpdated-image: url(/themes/legacy_dark/img/feed-open.png);
   --feeds-folderContextMenuOpenUpdatedAsUnified-image: url(/themes/legacy_dark/img/merge.png);
   --feeds-folderContextMenuSortByName-image: url(/themes/legacy_dark/img/sort.png);
@@ -64,20 +66,22 @@
   --feeds-feedContextMenuOpenFeed-image: url(/themes/legacy_dark/img/feed-open.png);
   --feeds-feedContextMenuMarkFeedAsRead-image: url(/themes/legacy_dark/img/feed-read.png);
   --feeds-feedContextMenuMarkFeedAsUpdated-image: url(/themes/legacy_dark/img/feed-unread.png);
+  --feeds-feedContextMenuMarkAllAsRead-image: url(/themes/legacy_dark/img/feed-read-all.png);
+  --feeds-feedContextMenuMarkAllAsUpdated-image: url(/themes/legacy_dark/img/feed-unread-all.png);
   --feeds-feedContextMenuNew-image: url(/themes/legacy_dark/img/folder-new.png);
   --feeds-feedContextMenuDelete-image: url(/themes/legacy_dark/img/delete.png);
   --feeds-feedContextMenuInfo-image: url(/themes/legacy_dark/img/feed-info.png);
   /* feeds selection bar */
   --feeds-selectionBar-color: var(--main-selection-background-color);
   /* ---- items layout ---- */
-  --items-Layout-background-color: var(--main-background-color);
+  --items-Layout-background-color: var(--main-background-secondary-color);
   --items-Layout-border-color: var(--main-border-color);
   /* items title bar*/
-  --items-Title-background-color: var(--main-background-color);
+  --items-Title-background-color: var(--main-background-secondary-color);
   --items-Title-border-color: var(--main-border-color);
   --items-Title-color: var(--main-text-color);
   /* items tool bar*/
-  --items-ToolBar-background-color: var(--main-background-color);
+  --items-ToolBar-background-color: var(--main-background-secondary-color);
   --items-ToolBar-border-color: var(--main-border-color);
   --items-ToolBar-image-width: 20px;
   --items-ToolBar-image-height: 20px;
@@ -93,13 +97,7 @@
   /* items selection bar */
   --items-selectionBar-color: var(--feeds-selectionBar-color);
   /* --- Item render layout ---- */
-  --renderItems-Layout-background-color: var(--main-background-color);
-  /* ---- dialog box ---- */
-  --dialog-background-color: var(--main-dialog-background-color);
-  --dialog-border-color: var(--main-border-color);
-  --dialog-title-color: #4f4545;
-  --dialog-title-background-color: #7a7a7a;
-  --dialog-label-color: var(--main-text-color);
+  --renderItems-Layout-background-color: var(--main-background-secondary-color);
   /* ---- misc. ---- */
   --main-dropTarget-color: gray;
 }

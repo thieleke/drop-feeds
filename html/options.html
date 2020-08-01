@@ -6,18 +6,23 @@
   <link href="/themes/_templates/css/options.css" rel="stylesheet">
   <link rel="icon" type="image/png" href="/themes/_templates/img/favicon.png" />
   <title>#Drop Feeds (options)</title>
+  <script src="/js/tools/bookmarkManager.js"></script>
   <script src="/js/tools/defaultValues.js"></script>
   <script src="/js/tools/browserManager.js"></script>
   <script src="/js/tools/textTools.js"></script>
   <script src="/js/tools/localStorageManager.js"></script>
   <script src="/js/tools/dateTime.js"></script>
   <script src="/js/tools/transfer.js"></script>
+  <script src="/js/tools/themeCustomManager.js"></script>
   <script src="/js/tools/themeManager.js"></script>
   <script src="/js/tools/listener.js"></script>
   <script src="/js/tools/progressBar.js"></script>
   <script src="/js/tools/itemSorter.js"></script>
   <script src="/js/tools/xmlTools.js"></script>
   <script src="/js/tools/cssManager.js"></script>
+  <script src="/js/tools/zipTools.js"></script>
+  <script src="/js/lib/jszip/jszip.min.js"></script>
+  <script src="/js/lib/jszip/jszip-utils.min.js "></script>
 </head>
 
 <body>
@@ -96,6 +101,9 @@
         <td><input type="checkbox" id="showFeedUpdatePopupCheckbox"><span id="textShowNotifications" class="checkboxText">#Show notification popup after update</span></td>
       </tr>
       <tr>
+        <td><input type="checkbox" id="dontShowFeedUpdatePopupIfZeroFeedCheckbox"><span id="textDontShowNotificationsIfZero" class="checkboxText">#Don't notify if no feed has been updated</span></td>
+      </tr>
+      <tr>
         <td><input type="checkbox" id="ifHttpsHasFailedRetryWithHttpCheckbox"><span id="textRetryWithHttp" class="checkboxText">#If https failed then retry with http</span></td>
       </tr>
     </table>
@@ -155,12 +163,22 @@
         </tr>
       </table>
     </fieldset>
+
     <fieldset id="contentsDateTimeFieldset">
       <legend id="contentsDateTimeLegend">#Date time format</legend>
       <textarea id="contentsDateTimeFormat" style="width: 100%"></textarea>
       <div id="contentsDateTimeExample">&nbsp;</div>
       <button id="contentsDateTimeResetButton">#Reset to default</button>&nbsp;&nbsp;
       <a id="urlDatetimeHelp" target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString">#Date time formats (see section 'Options')</a>
+    </fieldset>
+
+    <fieldset id="contentsAreaAdvFieldset">
+      <legend id="contentsAreaAdvLegend">#Advanced</legend>
+      <span><input type="checkbox" id="handlesFeedTabCheckbox"><span id="textHandlesFeedTab" class="checkboxText">#Handle RSS, ATOM, ... feed tabs with Drop Feeds</span></span>
+      <br />
+      <span><input type="checkbox" id="preventOpenWithCheckbox"><span id="textPreventOpenWith" class="checkboxText">#Prevent Open With dialog displaying (*)</span></span>
+      <small><br /></small>
+      <small id="texWarningPreventOpenWith">#(*) warning: with this option activated you can get a weird behavior on some web pages</small>
     </fieldset>
   </div>
   <!-- ~~~~~~ Tab Theme ~~~~~~ -->
@@ -213,36 +231,68 @@
         </td>
         <td></td>
       </tr>
-
+      <tr>
+        <td><label id="lblOpenCustomThemeManager">#Open custom theme manager</label><span>&nbsp;</span></td>
+        <td><button id="customThemeManagerButton">#Custom theme manager...</button></td>
+        <td></td>
+      </tr>
 
     </table>
   </div>
 
   <!-- ~~~~~~ Tab Management ~~~~~~ -->
   <div id="managementTab" class="tabContent">
-    <table>
-      <tr>
-        <td><label id="lblSelectOpmlFileToImport">#Select the opml file to import</label></td>
-        <td>
-          <input type="file" accept=".opml" id="inputImportFile" />
-          <button id="importButton">#Import...</button>
-        </td>
-        <td>
-          <div id="progressBarImportTotal" class="progressBarTotal">
-            <div id="progressBarImport" class="progressBarValue" style="width:0">0%</div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td><label id="lblSelectOpmlFileToExport">#Select where to export the opml file</label></td>
-        <td><button id="exportButton">#Export...</button></td>
-        <td>
-          <div id="progressBarExportTotal" class="progressBarTotal">
-            <div id="progressBarExport" class="progressBarValue" style="width:0">0%</div>
-          </div>
-        </td>
-      </tr>
-    </table>
+    <fieldset>
+      <table>
+        <tr>
+          <td><label id="lblSelectOpmlFileToImport">#Select the opml file to import</label></td>
+          <td>
+            <input type="file" accept=".opml" id="inputOpmlImportFile" class="inputImportFile" />
+            <button id="importOpmlButton">#Import...</button>
+          </td>
+          <td>
+            <div id="progressBarOpmlImportTotal" class="progressBarTotal">
+              <div id="progressBarOpmlImport" class="progressBarValue" style="width:0">0%</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label id="lblSelectOpmlFileToExport">#Select where to export the opml file</label></td>
+          <td><button id="exportOpmlButton">#Export...</button></td>
+          <td>
+            <div id="progressBarOpmlExportTotal" class="progressBarTotal">
+              <div id="progressBarOpmlExport" class="progressBarValue" style="width:0">0%</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
+    <p />
+    <fieldset>
+      <table>
+        <tr>
+          <td><label id="lblSelectSettingFileToImport">#Select the setting file to import</label></td>
+          <td>
+            <input type="file" accept=".json" id="inputImportSettingFile" class="inputImportFile" />
+            <button id="importSettingButton">#Import...</button>
+          </td>
+          <td>
+            <div id="progressBarImportSettingTotal" class="progressBarTotal">
+              <div id="progressBarImportSetting" class="progressBarValue" style="width:0">0%</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label id="lblSelectSettingFileToExport">#Select where to export the setting file</label></td>
+          <td><button id="exportSettingButton">#Export...</button></td>
+          <td>
+            <div id="progressBarSettingExportTotal" class="progressBarTotal">
+              <div id="progressBarSettingExport" class="progressBarValue" style="width:0">0%</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </fieldset>
   </div>
 
   <!-- ~~~~~~ Tab advanced ~~~~~~ -->
@@ -250,15 +300,38 @@
     <table>
       <tr>
         <td><label id="lblScriptManager">#Open script manager</label></td>
-        <td>&nbsp;<button id="scriptManagerButton">#Script manager...</button></td>
+        <td><button id="scriptManagerButton">#Script manager...</button></td>
       </tr>
       <tr>
         <td><label id="lblSecurityFilter">#Open security filter settings</label></td>
-        <td>&nbsp;<button id="securityFilterButton">#Security filter settings...</button></td>
+        <td><button id="securityFilterButton">#Security filter settings...</button></td>
+      </tr>
+      <tr>
+        <td><label id="lblDebugView">#Open the debug view</label></td>
+        <td><button id="debugViewButton">#Debug view...</button></td>
       </tr>
       <tr>
         <td><label id="lblGuid">GUID</label></td>
         <td><input type="text" id="fieldGuid" size="30" readonly="readonly" value=""></td>
+      </tr>
+      <tr>
+        <td><label id="lblFullExport">#Full export</label></td>
+        <td><button id="fullExportButton">#Export every thing...</button></td>
+      </tr>
+      <tr>
+        <td><label id="lblFullImport">#Full import</label></td>
+        <td>
+          <input type="file" accept=".zip" id="fullImportInput" class="inputImportFile" />
+          <button id="fullImportButton">#Import every thing...</button>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <div id="progressFullImportTotal" class="progressBarTotal">
+            <div id="progressFullImport" class="progressBarValue" style="width:0">0%</div>
+          </div>
+        </td>
       </tr>
     </table>
   </div>

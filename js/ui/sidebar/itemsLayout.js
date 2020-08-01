@@ -130,7 +130,7 @@ class ItemsLayout { /*exported ItemsLayout*/
   }
 
   _markAllIPreviousItemsAsRead() {
-    if (this._feedItemMarkAsReadOnLeaving) {
+    if (this._feedItemListVisible && this._feedItemMarkAsReadOnLeaving) {
       ItemManager.instance.markAllItemsAsRead();
     }
   }
@@ -174,7 +174,7 @@ class ItemsLayout { /*exported ItemsLayout*/
   }
 
   async _displayItems_sbscrb(value) {
-    this.displayItems_async(value.itemsTitle, value.titleLink, value.items);
+    await this.displayItems_async(value.itemsTitle, value.titleLink, value.items);
   }
 
   _setVisibility() {

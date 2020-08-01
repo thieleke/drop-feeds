@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link id="cssMain" href="/themes/legacy/css/main.css" rel="stylesheet">
+    <link id="cssMain" href="/themes/legacy_dark/css/main.css" rel="stylesheet">
     <link href="/themes/_templates/css/discover-feeds.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="/themes/_templates/img/favicon.png"/>
     <script src="/js/tools/themeManager.js"></script>
@@ -23,7 +23,13 @@
     <script src="/js/tools/userScriptTools.js"></script>
     <script src="/js/tools/workerPool.js"></script>
     <script src="/js/tools/securityFilters.js"></script>
+    <script src="/js/tools/themeCustomManager.js"></script>    
     <script src="/js/tools/theme-refresh.js"></script>
+    <script src="/js/tools/zipTools.js"></script>
+    <script src="/js/lib/jszip/jszip.min.js"></script>
+    <script src="/js/lib/jszip/jszip-utils.min.js "></script> 
+  
+  
     <title>Discover Feeds</title>
   </head>
 
@@ -53,7 +59,7 @@
       <button id="closeButton">Close</button>
       <span id="windowCloseError" style="color: red; visibility: hidden;">#Drop feeds has failed to close the windows, please close it manually.</span>
     </div>
-    <script src="/js/ui/discover-feeds/selectionRaw.js"></script>
+    <script src="/js/ui/discover-feeds/selectionRow.js"></script>
     <script src="/js/ui/discover-feeds/discover-feeds.js"></script>
   </body>
 </html>

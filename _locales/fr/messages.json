@@ -59,14 +59,23 @@
   "sbMarkAllAsUnread": {
     "message": "Tout marquer comme non lu"
   },
-  "sbOpenUnreadItemsInNewTabs": {
+  "sbMarkArticleAsRead": {
+    "message": "Marquer comme lu"
+  },
+  "sbMarkArticleAsUnread": {
+    "message": "Marquer comme non lu"
+  },
+  "sbMarkAllArticlesAsRead": {
+    "message": "Tout marquer comme lu"
+  },
+  "sbMarkAllArticlesAsUnread": {
+    "message": "Tout marquer comme non lu"
+  },
+  "sbOpenUnreadArticlesInNewTabs": {
     "message": "Ouvrir les articles non lus dans de nouveaux onglets"
   },
   "sbItemHideReadArticles": {
     "message": "Masquer les articles visités"
-  },
-  "sbMarkAllAsUpdated": {
-    "message": "Marquer comme à jour (non lu)"
   },
   "sbOpenUpdatedFeeds": {
     "message": "Ouvrir les flux non lus"
@@ -264,7 +273,7 @@
     "message": "Contenu"
   },
   "optTheme": {
-    "message": "Theme"
+    "message": "Thème"
   },
   "optManagement": {
     "message": "Gestion"
@@ -279,13 +288,19 @@
     "message": "Ne pas afficher le dossier racine"
   },
   "optSelectMainTheme": {
-    "message": "Theme principal"
+    "message": "Thème principal"
   },
   "optSelectRenderTemplate": {
     "message": "Modèle de l'onglet de rendu"
   },
   "optSelectRenderTheme": {
-    "message": "Theme de l'onglet de rendu"
+    "message": "Thème de l'onglet de rendu"
+  },
+  "optOpenCustomThemeManager": {
+    "message": "Ouvrir le gestionnaire de thèmes personnalisés"
+  },
+  "optThemeManager": {
+    "message": "Gestionnaire de thèmes personnalisés..."
   },
   "optFeedItemOrder": {
     "message": "Orde de tri des articles"
@@ -319,6 +334,9 @@
   },
   "optShowNotifications": {
     "message": "Notifier une fois la vérification des flux terminée"
+  },
+  "optDontShowNotificationsIfZero": {
+    "message": "Ne pas notifier, si aucun flux n'a été mis à jour"
   },
   "optRetryWithHttp": {
     "message": "Si échec https alors réessayer avec http"
@@ -374,16 +392,40 @@
   "optUrlDatetimeHelp": {
     "message": "Formats date et heure (voir la section 'Options')"
   },
+  "optContentsAreaAdvLegend": {
+    "message": "Avancé"
+  },
+  "optHandlesFeedTabCheckbox": {
+    "message": "Afficher les onglets flux RSS, ATOM, ...  avec Drop Feeds"
+  },
+  "optPreventOpenWith": {
+    "message": "Prévenir l'affichage de la boite de dialogue Ouvrir Avec... (*)"
+  },
+  "optWarningPreventOpenWith": {
+    "message": "(*) attention: en activant cette vous pouvez obtenir des comportement anormaux sur certaine pages web"
+  },
   "optSelectOpmlFileToImport": {
     "message": "Sélectionnez le fichier opml à importer"
   },
-  "optImport": {
+  "optOpmlImport": {
     "message": "Importer..."
   },
   "optSelectOpmlFileToExport": {
     "message": "Sélectionnez l'emplacement où exporter le fichier opml"
   },
-  "optExport": {
+  "optOpmlExport": {
+    "message": "Exporter..."
+  },
+  "optSelectSettingFileToImport": {
+    "message": "Sélectionnez le fichier de réglages à importer"
+  },
+  "optSettingImport": {
+    "message": "Importer..."
+  },
+  "optSelectSettingFileToExport": {
+    "message": "Sélectionnez l'emplacement où exporter le fichier de réglages"
+  },
+  "optSettingExport": {
     "message": "Exporter..."
   },
   "optAdvanced": {
@@ -404,10 +446,28 @@
   "optSecurityFilterSettings": {
     "message": "Réglage des filtres de sécurité"
   },
-  "messageDialogTitle": {
+  "optLblDebugView": {
+    "message": "Ouvrir la vue de déboguage"
+  },
+  "optDebugViewButton": {
+    "message": "Vue de déboguage..."
+  },
+  "optLblFullExport": {
+    "message": "Tout exporter"
+  },
+  "opFullExportButton": {
+    "message": "Exporter tout..."
+  },
+  "optLblFullImport": {
+    "message": "Tout importer"
+  },
+  "optFullImportButton": {
+    "message": "Importer tout..."
+  },
+  "optMessageDialogTitle": {
     "message": "Message"
   },
-  "messageDialogOk": {
+  "optMessageDialogOk": {
     "message": "ok"
   },
   "optHtmlFilter": {
@@ -644,6 +704,9 @@
   "usUScriptTabSize": {
     "message": "Largeur tab"
   },
+  "usUScriptTheme": {
+    "message": "Thème"
+  },
   "comment13": {
     "message": "------------------Editor console strings------------------"
   },
@@ -727,5 +790,65 @@
         "content": "$2"
       }
     }
+  },
+  "comment15": {
+    "message": "------------------ Custom theme manager ------------------"
+  },
+  "cthTitleCustomThemeManager": {
+    "message": "Gestionnaire de thèmes personnalisés"
+  },
+  "cthImportThemeCustom": {
+    "message": "Importer un thème personnalisé..."
+  },
+  "cthLegendMainThemeCustom": {
+    "message": "Thème pricipal"
+  },
+  "cthLegendRenderTemplateCustom": {
+    "message": "Modèle de rendu d'onglet"
+  },
+  "cthLegendRenderThemeCustom": {
+    "message": "Thème de rendu d'onglet"
+  },
+  "cthLegendScriptEditorThemeCustom": {
+    "message": "Thème d'éditeur de scripts"
+  },
+  "cthApplyTheme": {
+    "message": "Appliquer"
+  },
+  "cthRenameTheme": {
+    "message": "Renommer"
+  },
+  "cthDeleteTheme": {
+    "message": "Supprimer"
+  },
+  "cthExportMainThemeCustom": {
+    "message": "Exporter comme thème principal personnalisé..."
+  },
+  "cthExportRenderTemplateCustom": {
+    "message": "Export comme modèle de rendu d'onglet personnalisé..."
+  },
+  "cthExportRenderThemeCustom": {
+    "message": "Export comme thème de rendu d'onglet personnalisé..."
+  },
+  "cthExportScriptEditorThemeCustom": {
+    "message": "Export comme thème d'éditeur de scripts..."
+  },
+  "cthDiagRename": {
+    "message": "Renommer"
+  },
+  "cthDiagNewName": {
+    "message": "Nouveau nom:"
+  },
+  "cthDiagImport": {
+    "message": "Importer"
+  },
+  "cthDiagThemeName": {
+    "message": "Thème name:"
+  },
+  "cthDiagOk": {
+    "message": "Ok"
+  },
+  "cthDiagCancel": {
+    "message": "Annuler"
   }
 }

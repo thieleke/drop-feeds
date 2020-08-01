@@ -11,6 +11,8 @@ class DefaultValues { /*exported DefaultValues*/
   static get rootBookmarkId()                { return undefined; }
   static get mainThemeFolderName()           { return 'legacy'; }
   static get renderTemplateFolderName()      { return 'two_columns'; }
+  static get renderThemeFolderName()         { return 'legacy'; }
+  static get scriptEditorThemeFolderName()   { return 'studio_dark'; }
   static get updatedFeedsVisible()           { return false; }
   static get foldersOpened()                 { return true; }
   static get maxItemsInUnifiedView()         { return 100; }
@@ -21,6 +23,7 @@ class DefaultValues { /*exported DefaultValues*/
   static get ifHttpsHasFailedRetryWithHttp() { return true; }
   static get currentOptionTabName()          { return 'generalTab'; }
   static get showFeedUpdatePopup()           { return true; }
+  static get dontShowFeedUpdatePopupIfZeroFeed() { return false; }
   static get automaticFeedUpdates()          { return false; }
   static get automaticFeedUpdateMinutes()    { return 30; }
   static get automaticFeedUpdatesOnStart()   { return false; }
@@ -39,6 +42,9 @@ class DefaultValues { /*exported DefaultValues*/
   static get showFeedPreview()               { return true; }
   static get dateTimeOptions()               { return { weekday: 'long', year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }; }
   static get hideReadArticles()              { return false; }
+  static get handlesFeedTab()                { return true; }
+  static get preventOpenWith()               { return false; }
+  
 
   static get allowedTagList() {
     return [{ '*': ['style'] }, { 'a': ['href', 'title'] }, { 'b': [] }, { 'blockquote': [] }, { 'br': [] }, { 'cite': [] }, { 'code': [] }, { 'del': [] },

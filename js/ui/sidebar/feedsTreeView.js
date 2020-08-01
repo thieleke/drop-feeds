@@ -1,5 +1,5 @@
 /*global  browser DefaultValues BrowserManager FeedsSelectionBar FeedsTopMenu FeedManager FeedsStatusBar ItemsLayout
-FeedsContextMenu LocalStorageManager Listener ListenerProviders TextTools Feed BookmarkManager SideBar*/
+FeedsContextMenu LocalStorageManager Listener ListenerProviders TextTools Feed BookmarkManager SideBar CssManager*/
 'use strict';
 const _dropfeedsId = 'dropfeedsId=';
 class FeedsTreeView { /*exported FeedsTreeView*/
@@ -146,6 +146,16 @@ class FeedsTreeView { /*exported FeedsTreeView*/
     }
 
   }
+
+  async updatedFeedsSetVisibility_async(updatedFeedsVisible) {
+    let visibleValue = updatedFeedsVisible ? 'display:none !important;' : 'visibility:visible;';
+    let unreadValue = '  visibility: visible;\n  font-weight: bold;';
+    let showErrorsAsUnread = await LocalStorageManager.getValue_async('showErrorsAsUnread', DefaultValues.showErrorsAsUnreadCheckbox);
+    CssManager.replaceStyle('.feedUnread', unreadValue);
+    CssManager.replaceStyle('.feedRead', visibleValue);
+    CssManager.replaceStyle('.feedError', showErrorsAsUnread ? unreadValue : visibleValue);  
+  }
+
   _updateFolderCount(bookmarkItem) {
     if (!bookmarkItem) { return; }
     if (bookmarkItem.children) {
@@ -224,6 +234,13 @@ class FeedsTreeView { /*exported FeedsTreeView*/
       afterFolder.addEventListener('drop', (e) => { this._afterFolderOnDrop_event(e); });
     }
 
+    let labelForList = document.querySelectorAll('label');
+    for (let label of labelForList) {
+      label.addEventListener('contextmenu', (e) => { this._folderOnRightClicked_event(e); });
+    }
+
+
+
   }
   
   async _feedOnRightClicked_event(event) {
@@ -292,7 +309,7 @@ class FeedsTreeView { /*exported FeedsTreeView*/
     let data = event.dataTransfer.getData('text');
     let toMoveId = data.substring(data.indexOf(_dropfeedsId) + _dropfeedsId.length);
     let targetId = this._getTargetFeedId(event);
-    BookmarkManager.instance.moveAfterBookmark_async(toMoveId, targetId);
+    await BookmarkManager.instance.moveAfterBookmark_async(toMoveId, targetId);
     let dropZoneList = document.getElementsByClassName('dropZone');
     for (let el of dropZoneList) {
       el.classList.remove('dropZone');
@@ -305,11 +322,10 @@ class FeedsTreeView { /*exported FeedsTreeView*/
     let folderId = folderItem.getAttribute('id');
     let storedFolder = DefaultValues.getStoredFolder(folderId);
     storedFolder.checked = folderItem.checked;
-    LocalStorageManager.setValue_async(folderId, storedFolder);
+    await LocalStorageManager.setValue_async(folderId, storedFolder);
   }
 
   async _folderOnRightClicked_event(event) {
-    event.stopPropagation();
     event.preventDefault();
     let elFolder = event.currentTarget.parentNode.parentNode;
     let xPos = event.clientX;
@@ -389,7 +405,7 @@ class FeedsTreeView { /*exported FeedsTreeView*/
     let data = event.dataTransfer.getData('text');
     let toMoveId = data.substring(data.indexOf(_dropfeedsId) + _dropfeedsId.length);
     let folderId = event.target.getAttribute('after');
-    BookmarkManager.instance.moveAfterBookmark_async(toMoveId, folderId);
+    await BookmarkManager.instance.moveAfterBookmark_async(toMoveId, folderId);
     let dropZoneList = document.getElementsByClassName('dropZone');
     for (let el of dropZoneList) {
       el.classList.remove('dropZone');

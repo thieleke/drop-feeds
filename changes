@@ -1,3 +1,71 @@
+1.0.4
+Update legacy_dark theme
+Fix missing reference in discover-feeds view
+
+1.0.3a
+Make Drop Feeds do not crash when the API browser.storage.local.set is broken.
+Add an option to do not notify when no feed has been updated.
+Update ja and it translations (thank you to takepon1 and  carlfranz)
+Use new toggle api browser.sidebarAction.toggle
+
+1.0.3
+Make Drop Feeds do not crash when the API browser.storage.local.set is broken.
+Add an option to do not notify when no feed has been updated.
+
+1.0.2
+Fix userscript editor loading
+
+1.0.1
+In theme Sage SC Dark make items title color a lighter color (from Judy85)
+
+1.0
+Sidebar Feed RSS reader with 3 panels (feeds/items/articles)
+Support folders and sub-folders
+Filter view filter
+Many themes are and render layout are available
+Notifications on update complete
+Asynchronous feed checking
+An unified feeds view is available
+Discovery feeds feature (the magnify icon) to detect hidden feeds
+Mutilanguages support
+Podcast Support
+Support of drag a drop & move elements of the tree view
+User scripts IDE
+Security filters
+Custom theme export/import
+And many other features and options...
+
+
+0.99rc
+Release candidate before 1.0
+
+0.9.7
+Add custom theme manager
+Make user can change script editor theme
+Add full export/import feature
+Fix empty html_content in json feeds
+Fix 'Promise resolved after context unloaded' console messages
+a:
+Fix missing reference to themeCustomManager in discover-feeds.html and subscribe.html
+b:
+Fix: do not mark items as read if item panel is closed
+
+0.9.6
+Add Export/import settings
+Reduce he size of the notification icon
+Add json feed support
+Handle feed tabs
+Add button to display the debug view
+Always update the feed name on subscribe
+
+0.9.5
+Add entries in context menu to set all feeds to read/unread status
+Subscribe to many feeds from discovery-feeds view
+Update Japanese translation by takepon1
+Add history.getVisits workaround for Firefox Nightly 67
+Fix right click on folder icons
+Fix "Reuse Drop Feeds Tabs" management
+
 0.9.4
 Update USTools help
 Improve Drag and Drop management
@@ -6,10 +74,13 @@ Make filter works with folders closed
 Improve automatic updates to keep timing even when Firefox is closed
 Add an button to hide read articles 
 Reduce loading time for youtube subscription page
+Update the "Reuse Drop Feeds Tab" checkbox behavior by Jeff F.
 Update Japanese translation by takepon1
 Update Dutch translation by Judy85
 Fix need to click twice on Drop Feeds icon to display the sidebar panel
 Fix mark article as read when it has opened in sidebar
+Fix reuse Drop Feeds tab
+Fix youtube channel title on subscription
 
 0.9.3
 Improve UIs loading time

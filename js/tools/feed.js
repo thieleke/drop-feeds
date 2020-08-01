@@ -1,4 +1,5 @@
-/*global  browser DefaultValues TextTools, Transfer Compute DateTime FeedParser FeedRenderer LocalStorageManager FeedsTreeView UserScriptTools scriptVirtualProtocol*/
+/*global  browser DefaultValues TextTools, Transfer Compute DateTime FeedParser FeedRenderer*/
+/*global  LocalStorageManager FeedsTreeView UserScriptTools scriptVirtualProtocol*/
 'use strict';
 
 const feedStatus = {
@@ -23,6 +24,13 @@ class Feed { /*exported Feed*/
 
   static delete_async(feedId) {
     browser.bookmarks.remove(feedId);
+  }
+
+  static async getUnifiedDocUrl_async(unifiedFeedItems, unifiedChannelTitle) {
+    let unifiedFeedHtml = await FeedRenderer.feedItemsListToUnifiedHtml_async(unifiedFeedItems, unifiedChannelTitle);
+    let unifiedFeedBlob = new Blob([unifiedFeedHtml]);
+    let unifiedFeedHtmlUrl = URL.createObjectURL(unifiedFeedBlob);
+    return unifiedFeedHtmlUrl;
   }
 
   constructor(id) {
@@ -68,14 +76,15 @@ class Feed { /*exported Feed*/
     return this._error;
   }
 
-  async getDocUrl_async() {
-    let feedHtml = await this._getFeedHtml_async();
+  async getDocUrl_async(subscribeButtonTarget) {
+    let feedHtml = await this._getFeedHtml_async(subscribeButtonTarget);
     let feedBlob = new Blob([feedHtml]);
     let feedHtmlUrl = URL.createObjectURL(feedBlob);
     return feedHtmlUrl;
   }
 
-  async _getFeedHtml_async() {
+
+  async _getFeedHtml_async(subscribeButtonTarget) {
     let feedHtml = '';
     //if there is an error then get html from the error and return
     if (this._error != null) {
@@ -84,7 +93,7 @@ class Feed { /*exported Feed*/
     }
 
     //there is no error then get html from feed parsing
-    try { feedHtml = await FeedRenderer.renderFeedToHtml_async(this._feedText, this._storedFeed.title); }
+    try { feedHtml = await FeedRenderer.renderFeedToHtml_async(this._feedText, this._storedFeed.title, false, subscribeButtonTarget); }
     catch (e) { this._error = e + '\n\n' + e.stack; }
 
     //if an error has occurred  during feed parsing then get html from the error
@@ -141,7 +150,7 @@ class Feed { /*exported Feed*/
 
   async setStatus_async(status) {
     this._storedFeed.status = status;
-    this.updateUiStatus_async();
+    await this.updateUiStatus_async();
     await this.save_async();
   }
 
@@ -227,7 +236,7 @@ class Feed { /*exported Feed*/
             if (this._ifHttpsHAsFailedRetryWithHttp && this.url.startsWith('https:')) {
               try {
                 retry = true;
-                this._download_async(ignoreRedirection, true, scriptData);
+                await this._download_async(ignoreRedirection, true, scriptData);
               }
               catch (e3) {
                 this._error = e3 + '\n\n' + e3.stack;

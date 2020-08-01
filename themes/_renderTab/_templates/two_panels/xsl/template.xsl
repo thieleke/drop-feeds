@@ -12,6 +12,11 @@
             <xsl:value-of select="/render/context/icon"/>
           </xsl:attribute>
         </xsl:element>
+          <xsl:element name="link">
+            <xsl:attribute name="rel">stylesheet</xsl:attribute>
+            <xsl:attribute name="type">text/css</xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="/render/context/subscribeButtonStyle"/></xsl:attribute>
+          </xsl:element>
         <xsl:element name="link">
           <xsl:attribute name="rel">stylesheet</xsl:attribute>
           <xsl:attribute name="type">text/css</xsl:attribute>
@@ -134,8 +139,9 @@
           </xsl:for-each>
         </div>
         <xsl:element name="script">
+          <xsl:attribute name="type">text/javascript</xsl:attribute>
           <xsl:attribute name="src">
-            <xsl:value-of select="/render/context/template"/>/../../js/template.js
+            <xsl:value-of select="/render/context/script"/>
           </xsl:attribute>
         </xsl:element>
       </body>
