@@ -372,7 +372,7 @@ class FeedParser { /*exported FeedParser*/
       extractedDateTime = new Date(dateTimeText);
       if (!DateTime.isValid(extractedDateTime)) {
         extractedDateTime = new Date(DateTime.timeZoneToGmt(dateTimeText));
-        if (!DateTime.isValid(DateTime)) {
+        if (!DateTime.isValid(extractedDateTime)) {
           //DateTime = new Date(null);
           extractedDateTime = null;
         }
