@@ -161,14 +161,11 @@ class FeedManager { /*exported FeedManager*/
       }
       else {
         let p = action(feed, false, openNewTabForce, isLast, folderTitle);
+        p.then(() => { p._settled = true; }, () => { p._settled = true; });
         pending.push(p);
         if (pending.length >= maxConcurrent) {
           await Promise.race(pending);
-          pending = pending.filter(pr => {
-            let settled = false;
-            pr.then(() => { settled = true; }, () => { settled = true; });
-            return !settled;
-          });
+          pending = pending.filter(pr => !pr._settled);
         }
       }
     }
