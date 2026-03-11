@@ -432,7 +432,17 @@ class BrowserManager { /* exported BrowserManager*/
     return browser.runtime.getURL(url);
   }
 
-  static createFragment(fragment) {    
-    return  document.createRange().createContextualFragment(fragment);
+  static createFragment(fragment) {
+    return document.createRange().createContextualFragment(fragment);
+  }
+
+  static createSafeFragment(htmlString) {
+    let parser = new DOMParser();
+    let doc = parser.parseFromString(htmlString, 'text/html');
+    let frag = document.createDocumentFragment();
+    while (doc.body.firstChild) {
+      frag.appendChild(document.adoptNode(doc.body.firstChild));
+    }
+    return frag;
   }
 }

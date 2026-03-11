@@ -31,15 +31,19 @@ class XmlTools { /*exported XmlTools*/
       .replace(/&apos;/g, "'")
 
       .replace(/%26/g, '&')
-      .replace(/%3c/g, '<')
-      .replace(/%62/g, '>')
-      .replace(/%22;/g, '"')
+      .replace(/%3c/gi, '<')
+      .replace(/%3e/gi, '>')
+      .replace(/%22/g, '"')
       .replace(/%27/g, "'");
     return unescapedText;
   }
 
   static unescapeTextAll(text) {
-    return unescape(text);
+    try {
+      return decodeURIComponent(text);
+    } catch (e) {
+      return text;
+    }
   }
 
   static unescapeUrlXml(text) {

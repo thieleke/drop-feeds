@@ -11,12 +11,16 @@ class FeedRenderer { /*exported FeedRenderer*/
 
   static feedErrorToHtml(error, url, title) {
     error = TextTools.replaceAll(error, '\n', '<br/>');
+    let safeTitle = TextTools.escapeHtml(title);
+    let safeUrl = TextTools.sanitizeUrl(url);
+    let safeUrlDisplay = TextTools.escapeHtml(url);
+    let safeError = TextTools.escapeHtml(error);
     let feedHtml = USTools.rssHeader(title, url, 'Error');
     let description = `<table>
-    <tr><td>Name: </td><td>` + title + `</td></tr>
-    <tr><td>Url: </td><td><a href="` + url + '">' + url + `</a></td></tr>
+    <tr><td>Name: </td><td>` + safeTitle + `</td></tr>
+    <tr><td>Url: </td><td><a href="` + safeUrl + '">' + safeUrlDisplay + `</a></td></tr>
     <tr><td></td><td></td></tr>
-    <tr><td>Error: </td><td>` + error + `</td></tr>
+    <tr><td>Error: </td><td>` + safeError + `</td></tr>
     </table>`;
     feedHtml += USTools.rssItem('Error: ' + error.split('<br/>')[0], url, new Date(), description);
     feedHtml += USTools.rssFooter();
@@ -24,7 +28,7 @@ class FeedRenderer { /*exported FeedRenderer*/
   }
 
   static renderItemsTitleToHtml(title, link) {
-    let titleHtml = '<a href="' + link + '">' + title + '</a>';
+    let titleHtml = '<a href="' + TextTools.sanitizeUrl(link) + '">' + TextTools.escapeHtml(title) + '</a>';
     return titleHtml;
   }
 
@@ -81,7 +85,7 @@ class FeedRenderer { /*exported FeedRenderer*/
     htmlHead += '    <link rel="icon" type="image/png" href="' + iconUrl + '">\n';
     htmlHead += '    <link rel="stylesheet" type="text/css" href="' + cssUrl1 + '">\n';
     htmlHead += '    <link rel="stylesheet" type="text/css" href="' + cssUrl2 + '">\n';
-    if (channel.title) { htmlHead += '    <title>' + channel.title + ' - Drop-Feed</title>\n'; }
+    if (channel.title) { htmlHead += '    <title>' + TextTools.escapeHtml(channel.title) + ' - Drop-Feed</title>\n'; }
     htmlHead += '  </head>\n';
     htmlHead += '  <body>\n';
     return htmlHead;
@@ -100,7 +104,7 @@ class FeedRenderer { /*exported FeedRenderer*/
     if (!title) { title = '(No Title)'; }
     let error = (isError ? 'error' : '');
     htmlChannel += '    <div class="channelHead ' + error + '">\n';
-    if (channel.title) { htmlChannel += '      <h1 class="channelTitle"><a class="channelLink" href="' + channel.link + '">' + channel.title + '</a></h1>\n'; }
+    if (channel.title) { htmlChannel += '      <h1 class="channelTitle"><a class="channelLink" href="' + TextTools.sanitizeUrl(channel.link) + '">' + TextTools.escapeHtml(channel.title) + '</a></h1>\n'; }
     if (channel.description) { htmlChannel += '      <p class="channelDescription">' + channel.description + '</p>\n'; } else { htmlChannel += '<p class="channelDescription"/>'; }
     htmlChannel += '    </div>\n';
     return htmlChannel;
@@ -109,15 +113,18 @@ class FeedRenderer { /*exported FeedRenderer*/
   static _getEnclosureHTML(item) {
     if (!item || !item.enclosure)
       return '';
+    let safeEncUrl = TextTools.sanitizeUrl(item.enclosure.url);
+    let safeEncUrlDisplay = TextTools.escapeHtml(item.enclosure.url);
+    let safeMimetype = TextTools.escapeHtml(item.enclosure.mimetype);
     if (item.enclosure.mimetype.startsWith('audio/')) {
-      let html = '<div class="itemAudioPlayer"><audio preload=none controls><source src="' + item.enclosure.url + '" type="' + item.enclosure.mimetype + '"></audio></div>\n' +
-        '<div class="itemEnclosureLink"><a href="' + item.enclosure.url + '" download>' + item.enclosure.url + '</a></div>\n';
+      let html = '<div class="itemAudioPlayer"><audio preload=none controls><source src="' + safeEncUrl + '" type="' + safeMimetype + '"></audio></div>\n' +
+        '<div class="itemEnclosureLink"><a href="' + safeEncUrl + '" download>' + safeEncUrlDisplay + '</a></div>\n';
       return html;
     }
 
     if (item.enclosure.mimetype.startsWith('video/')) {
-      let html = '<div class="itemVideoPlayer"><video width=640 height=480 preload=none controls><source src="' + item.enclosure.url + '" type="' + item.enclosure.mimetype + '"></video></div>\n' +
-        '<div class="itemEnclosureLink"><a href="' + item.enclosure.url + '" download>' + item.enclosure.url + '</a></div>\n';
+      let html = '<div class="itemVideoPlayer"><video width=640 height=480 preload=none controls><source src="' + safeEncUrl + '" type="' + safeMimetype + '"></video></div>\n' +
+        '<div class="itemEnclosureLink"><a href="' + safeEncUrl + '" download>' + safeEncUrlDisplay + '</a></div>\n';
       return html;
     }
 
@@ -133,13 +140,13 @@ class FeedRenderer { /*exported FeedRenderer*/
     htmlItem += '      <h2 class="itemTitle ' + error + '">\n';
     htmlItem += '        <span class="itemNumber">' + (itemNumber ? itemNumber : item.number) + '.</span>\n';
     let linkTarget = FeedRendererOptions.instance.itemNewTab ? 'target="_blank" rel="noopener noreferrer"' : '';
-    htmlItem += '        <a ' + linkTarget + ' href="' + item.link + '">' + title + '</a>\n';
+    htmlItem += '        <a ' + linkTarget + ' href="' + TextTools.sanitizeUrl(item.link) + '">' + TextTools.escapeHtml(title) + '</a>\n';
     htmlItem += '      </h2>\n';
     if (item.description) { htmlItem += '      <div class="itemDescription">' + item.description + ' </div>\n'; }
     htmlItem += '      <div class="itemInfo">\n';
-    if (item.category) { htmlItem += '        <div class="itemCat">[' + item.category + ']</div>\n'; }
-    if (item.author) { htmlItem += '        <div class="itemAuthor">Posted by ' + item.author + '</div>\n'; }
-    if (item.pubDate) { htmlItem += '        <div class="itemPubDate">' + item.pubDateText + '</div>\n'; }
+    if (item.category) { htmlItem += '        <div class="itemCat">[' + TextTools.escapeHtml(item.category) + ']</div>\n'; }
+    if (item.author) { htmlItem += '        <div class="itemAuthor">Posted by ' + TextTools.escapeHtml(item.author) + '</div>\n'; }
+    if (item.pubDate) { htmlItem += '        <div class="itemPubDate">' + TextTools.escapeHtml(item.pubDateText) + '</div>\n'; }
     if (item.enclosure) { htmlItem += '        <div class="itemEnclosure">' + FeedRenderer._getEnclosureHTML(item) + ' </div>\n'; }
     htmlItem += '      </div>\n';
     htmlItem += '    </div>\n';
@@ -163,7 +170,7 @@ class FeedRenderer { /*exported FeedRenderer*/
     }
     let tooltipText = FeedParser.getItemTooltipText(item, num);
     let tooltip = (tooltipsVisible ? 'title' : 'title1') + '="' + BrowserManager.htmlToText(tooltipText) + '"';
-    let htmlItemLine = '<span class="item' + visited + '" ' + tooltip + '" ' + target + ' href="' + item.link + '" num="' + num + '">' + num + '. ' + title + '<br/></span>';
+    let htmlItemLine = '<span class="item' + visited + '" ' + tooltip + '" ' + target + ' href="' + TextTools.sanitizeUrl(item.link) + '" num="' + num + '">' + num + '. ' + TextTools.escapeHtml(title) + '<br/></span>';
     return htmlItemLine;
   }
 }

@@ -20,7 +20,7 @@ class DefaultValues { /*exported DefaultValues*/
   static get feedItemListToolbar()           { return true; }
   static get feedItemDescriptionTooltips()   { return true; }
   static get feedItemRenderInSidebar()       { return true; }
-  static get ifHttpsHasFailedRetryWithHttp() { return true; }
+  static get ifHttpsHasFailedRetryWithHttp() { return false; }
   static get currentOptionTabName()          { return 'generalTab'; }
   static get showFeedUpdatePopup()           { return true; }
   static get dontShowFeedUpdatePopupIfZeroFeed() { return false; }

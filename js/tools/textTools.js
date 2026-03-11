@@ -131,4 +131,32 @@ class TextTools { /* exported TextTools*/
     catch(e) { isValidUrl = false; }
     return isValidUrl;
   }
+
+  static escapeHtml(text) {
+    if (!text) { return ''; }
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  static sanitizeUrl(url) {
+    if (!url) { return ''; }
+    let trimmed = url.trim();
+    try {
+      let parsed = new URL(trimmed);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return trimmed;
+      }
+    }
+    catch (e) {
+      // relative URLs are acceptable in feed context
+      if (!trimmed.includes(':') || trimmed.startsWith('/')) {
+        return trimmed;
+      }
+    }
+    return '';
+  }
 }

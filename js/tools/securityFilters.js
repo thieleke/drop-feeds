@@ -1,6 +1,7 @@
 /* global Listener ListenerProviders DefaultValues TextTools WorkerReplace*/
 'use strict';
 const _blackListHtmlTagsTopShow = [{ 'blink': [] }, { 'marquee': [] }];
+const _dangerousBaseTags = ['script', 'iframe', 'object', 'embed', 'form', 'input', 'textarea', 'button', 'select', 'applet', 'link', 'meta', 'base', 'frame', 'frameset'];
 class SecurityFilters { /* exported SecurityFilters*/
   static get instance() { return (this._instance = this._instance || new this()); }
 
@@ -9,7 +10,7 @@ class SecurityFilters { /* exported SecurityFilters*/
     this._rejectedCssFragmentList = DefaultValues.rejectedCssFragmentList;
     Listener.instance.subscribe(ListenerProviders.localStorage, 'allowedHtmlElementsList', (v) => this._setAllowedHtmlElementsList_sbscrb(v), true);
     Listener.instance.subscribe(ListenerProviders.localStorage, 'rejectedCssFragmentList', (v) => this._setRejectedCssFragmentsList_sbscrb(v), true);
-    this._wkRplc = new WorkerReplace(20);
+    this._wkRplc = new WorkerReplace(5);
     this._wkRplc.init_async();
   }
 
@@ -28,7 +29,11 @@ class SecurityFilters { /* exported SecurityFilters*/
     this._allowedHtmlTagList.push({ '<!': [] }); // avoid to have manage comments for now (but we will have to do)
     let textTagList = [...new Set(text.toLowerCase().match(new RegExp('(<[^</])\\w*\\s*', 'g')) || [])].map(x => x.replace('<', '').trim());
     textTagList = textTagList.map(x => TextTools.escapeRegExp(x));
-    const allowedFromUserScriptsTagList = textTagList.filter(tag => tag.endsWith('_dp')).map(tag => ({ [tag]: '*' }));
+    const allowedFromUserScriptsTagList = textTagList.filter(tag => {
+      if (!tag.endsWith('_dp')) { return false; }
+      let baseName = tag.slice(0, -3).replace(/\\/g, '');
+      return !_dangerousBaseTags.includes(baseName.toLowerCase());
+    }).map(tag => ({ [tag]: '*' }));
 
     let toBlackListTagList = [...new Set(textTagList.filter(x =>
       !this._tagListIncludes(this._allowedHtmlTagList, x) && !this._tagListIncludes(allowedFromUserScriptsTagList, x)
@@ -55,7 +60,7 @@ class SecurityFilters { /* exported SecurityFilters*/
   }
 
   _tagListIncludes(tagList, x) {
-    return (tagList.findIndex(e => Object.keys(e) == x)) >= 0;
+    return (tagList.findIndex(e => Object.keys(e)[0] === x)) >= 0;
   }
 
   async _disableTags_async(text, tagToDisableList, hide) {
@@ -73,14 +78,14 @@ class SecurityFilters { /* exported SecurityFilters*/
   async _disableAttributes_async(text, textTagList) {
     if (!textTagList) { return; }
     let textTagListWithAllowedAtt = [...new Set(textTagList.filter(x => {
-      let tagObj = this._allowedHtmlTagList.find(y => Object.keys(y) == x);
+      let tagObj = this._allowedHtmlTagList.find(y => Object.keys(y)[0] === x);
       return (tagObj[x].length != 0);
     }))];
     for (let tag of textTagList) {
       if (!tag) { continue; }
       let regexExtractAtt = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gi;
       if (textTagListWithAllowedAtt.includes(tag)) {
-        let allowedAttList = this._allowedHtmlTagList.find(x => Object.keys(x) == tag)[tag];
+        let allowedAttList = this._allowedHtmlTagList.find(x => Object.keys(x)[0] === tag)[tag];
         let regexExtractTags = new RegExp('<' + tag + '\\b[^>]*>(.*?)', 'gi');
         let textTagWithAttList = text.match(regexExtractTags);
         if (!textTagWithAttList) { continue; }
@@ -93,9 +98,15 @@ class SecurityFilters { /* exported SecurityFilters*/
             if (!allowedAttList.includes(attName)) {
               cleanedTag = cleanedTag.replace(att, '');
             }
-            else if (attName.toLowerCase() == 'style') {
+            else if (attName.toLowerCase() === 'style') {
               let cleanedAttStyle = await this._applyInlineCssRejection_async(att);
               cleanedTag = cleanedTag.replace(att, cleanedAttStyle);
+            }
+            else if (attName.toLowerCase() === 'href' || attName.toLowerCase() === 'src') {
+              let attValue = att.substring(att.indexOf('=') + 1).replace(/^["']|["']$/g, '');
+              if (!SecurityFilters._isSafeUrl(attValue)) {
+                cleanedTag = cleanedTag.replace(att, '');
+              }
             }
           }
           text = text.replace(tagWithAtt, cleanedTag);
@@ -115,6 +126,17 @@ class SecurityFilters { /* exported SecurityFilters*/
     await this._rejectedCssFragmentList.map(async filter => cleanedAttStyle = await this._wkRplc.replace_async(attStyle, new RegExp(filter), ''));
 
     return cleanedAttStyle;
+  }
+
+  static _isSafeUrl(url) {
+    if (!url) { return true; }
+    let trimmed = url.trim().toLowerCase();
+    // Block dangerous URL schemes
+    if (trimmed.startsWith('javascript:') || trimmed.startsWith('vbscript:') ||
+        trimmed.startsWith('data:text/html') || trimmed.startsWith('data:application')) {
+      return false;
+    }
+    return true;
   }
 
 }

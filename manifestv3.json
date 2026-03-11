@@ -83,7 +83,6 @@
     "notifications",
     "storage",
     "tabs",
-    "webNavigation",
-    "webRequest"
+    "webNavigation"
   ]
 }

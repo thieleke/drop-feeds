@@ -39,7 +39,7 @@ class FeedTransform { /*exported FeedTransform*/
   </context>
   <channel>
     <title><![CDATA[${FeedTransform._transformEncode((feedInfo.channel.title || '(no title)'))}]]></title>
-    <link><![CDATA[${feedInfo.channel.link}]]></link>
+    <link><![CDATA[${TextTools.sanitizeUrl(feedInfo.channel.link)}]]></link>
     <description>
       <![CDATA[${FeedTransform._transformEncode(description)}]]>
     </description>
@@ -73,9 +73,9 @@ class FeedTransform { /*exported FeedTransform*/
       <number><![CDATA[${(itemNumber ? itemNumber : item.number)}]]></number>
       <title>${FeedTransform._transformEncode(item.title)}</title>
       <target><![CDATA[${(FeedRendererOptions.instance.itemNewTab ? '_blank' : '')}]]></target>
-      <link><![CDATA[${item.link}]]></link>
+      <link><![CDATA[${TextTools.sanitizeUrl(item.link)}]]></link>
       <description>
-        <![CDATA[${FeedTransform._transformEncode(item.description)} + ']]>'
+        <![CDATA[${FeedTransform._transformEncode(item.description)}]]>
       </description>
       <category><![CDATA[${item.category}]]></category>
       <author><![CDATA[${item.author}]]></author>
@@ -85,7 +85,7 @@ class FeedTransform { /*exported FeedTransform*/
         <enclosure>
           <type><![CDATA[${(item.enclosure ? enclosureType : '')}]]></type>
           <mimetype><![CDATA[${(item.enclosure ? item.enclosure.mimetype : '')}]]></mimetype>
-          <link><![CDATA[${(item.enclosure ? item.enclosure.url : '')}]]></link>
+          <link><![CDATA[${(item.enclosure ? TextTools.sanitizeUrl(item.enclosure.url) : '')}]]></link>
         </enclosure>      
       </enclosures>
     </item>\n`;
@@ -134,7 +134,11 @@ class FeedTransform { /*exported FeedTransform*/
       doc.body.append(subscribeButtonScript);
 
     }
-    catch (e) { }
+    catch (e) {
+      /*eslint-disable no-console*/
+      console.error('FeedTransform._addSubscribeButton:', e);
+      /*eslint-enable no-console*/
+    }
   }
 
   static _decodeElements(htmlDoc) {
@@ -157,7 +161,7 @@ class FeedTransform { /*exported FeedTransform*/
     let element = htmlDoc.querySelector('.encodedHtml');
     while (element) {
       let decodedHtml = FeedTransform._transformDecode(element.innerHTML);
-      let decodedElement = BrowserManager.createFragment(decodedHtml);
+      let decodedElement = BrowserManager.createSafeFragment(decodedHtml);
       element.parentNode.replaceChild(decodedElement, element);
       element = htmlDoc.querySelector('.encodedHtml');
     }
