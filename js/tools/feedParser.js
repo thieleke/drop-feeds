@@ -109,6 +109,10 @@ class FeedParser { /*exported FeedParser*/
     if (!feedText) {
       return 'Feed is empty!';
     }
+    
+    // Sanitize XML content to prevent XXE attacks
+    feedText = XmlTools.sanitizeXmlForXxe(feedText);
+    
     let isJson = feedText.startsWith('{');
     if (isJson) {
       let jsonFeed = undefined;

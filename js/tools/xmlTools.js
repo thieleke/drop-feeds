@@ -50,4 +50,33 @@ class XmlTools { /*exported XmlTools*/
     return XmlTools.unescapeTextXml(text);
   }
 
+  /**
+   * Sanitizes XML content to prevent XXE (XML External Entity) attacks
+   * by removing potential XXE payloads before parsing
+   * @param {string} xmlText - The XML text to sanitize
+   * @returns {string} - Sanitized XML text safe for parsing
+   */
+  static sanitizeXmlForXxe(xmlText) {
+    if (!xmlText) {
+      return xmlText;
+    }
+
+    // Remove XML external entity declarations
+    // This prevents <!ENTITY and <!DOCTYPE declarations that could reference external entities
+    let sanitized = xmlText.replace(/<!ENTITY\s+[^>]*>/gi, '');
+    sanitized = sanitized.replace(/<!DOCTYPE\s+[^>]*>/gi, '');
+
+    // Remove potential external entity references
+    // This prevents &entityName; references that could be expanded
+    sanitized = sanitized.replace(/&[a-zA-Z][a-zA-Z0-9-]*;/g, (match) => {
+      // Only remove known external entity references
+      // Common XML entities like <, >, &, ", ' are safe
+      const knownEntities = ['lt', 'gt', 'amp', 'quot', 'apos'];
+      const entityName = match.substring(1, match.length - 1);
+      return knownEntities.includes(entityName) ? match : '';
+    });
+
+    return sanitized;
+  }
+
 }

@@ -93,12 +93,15 @@ class FeedTransform { /*exported FeedTransform*/
   }
 
   static async _transform_async(xmlText, isError, subscribeButtonTarget) {
+    // Sanitize XML to prevent XXE attacks by removing potential XXE payloads
+    let sanitizedXmlText = XmlTools.sanitizeXmlForXxe(xmlText);
+    
     let xslDocUrl = browser.runtime.getURL(await ThemeManager.instance.getRenderXslTemplateUrl_async(isError));
     let xslStylesheet = await Transfer.downloadXlsFile_async(xslDocUrl);
     let xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xslStylesheet);
     let oParser = new DOMParser();
-    let xmlDoc = oParser.parseFromString(xmlText, 'application/xml');
+    let xmlDoc = oParser.parseFromString(sanitizedXmlText, 'application/xml');
     let htmlDoc = xsltProcessor.transformToDocument(xmlDoc);
     FeedTransform._decodeElements(htmlDoc);
     if (subscribeButtonTarget) { FeedTransform._addSubscribeButton(htmlDoc, subscribeButtonTarget); }

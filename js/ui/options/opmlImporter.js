@@ -22,8 +22,11 @@ class OpmlImporter { /*exported OpmlImporter*/
   }
 
   _opmlIsValid(opmlText) {
+    // Sanitize OPML to prevent XXE attacks by removing potential XXE payloads
+    let sanitizedOpmlText = XmlTools.sanitizeXmlForXxe(opmlText);
+    
     let parser = new DOMParser();
-    let docXml = parser.parseFromString(opmlText, 'application/xml');
+    let docXml = parser.parseFromString(sanitizedOpmlText, 'application/xml');
     let parseErrorElements = docXml.getElementsByTagName('parsererror');
     return (parseErrorElements.length == 0);
   }
