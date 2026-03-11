@@ -45,10 +45,17 @@ class Listener { /*exported Listener*/
   }
 
   unsubscribe(provider, key) {
-    /*eslint-disable no-unused-vars*/
-    let subscriberList = this._getSubscriberList(provider);
-    subscriberList = subscriberList.filter(subscriber => subscriber[_listenerFields.key] !== key);
-    /*eslint-enable no-unused-vars*/
+    switch (provider) {
+      case ListenerProviders.localStorage:
+        this._localStorageSubscriberList = this._localStorageSubscriberList.filter(subscriber => subscriber[_listenerFields.key] !== key);
+        break;
+      case ListenerProviders.message:
+        this._messageSubscriberList = this._messageSubscriberList.filter(subscriber => subscriber[_listenerFields.key] !== key);
+        break;
+      case ListenerProviders.bookmarks:
+        this._bookmarksSubscriberList = this._bookmarksSubscriberList.filter(subscriber => subscriber[_listenerFields.key] !== key);
+        break;
+    }
   }
 
   _getSubscriberList(provider) {
@@ -90,10 +97,9 @@ class Listener { /*exported Listener*/
 
   async _runtimeOnMessage_event(request) {
     let response = null;
-    let subscriberKeyList = this._messageSubscriberList.map(sb => (sb[_listenerFields.key]));
-    if (subscriberKeyList.includes(request.key)) {
-      let subscriberEntry = this._messageSubscriberList.filter(subscriber => subscriber[_listenerFields.key] == request.key);
-      subscriberEntry[_listenerFields.key][_listenerFields.callback](request.value);
+    let matchingSubscribers = this._messageSubscriberList.filter(subscriber => subscriber[_listenerFields.key] === request.key);
+    for (let subscriber of matchingSubscribers) {
+      subscriber[_listenerFields.callback](request.value);
     }
     return Promise.resolve(response);
   }
@@ -121,10 +127,9 @@ class Listener { /*exported Listener*/
   }
 
   async _bookmarkOnAny_event(key, id, eventInfo) {
-    let subscriberKeyList = this._bookmarksSubscriberList.map(sb => (sb[0]));
-    if (subscriberKeyList.includes(key)) {
-      let subscriberEntry = this._bookmarksSubscriberList.filter(subscriber => subscriber[_listenerFields.key] == key);
-      subscriberEntry[_listenerFields.key][_listenerFields.callback](id, eventInfo);
+    let matchingSubscribers = this._bookmarksSubscriberList.filter(subscriber => subscriber[_listenerFields.key] === key);
+    for (let subscriber of matchingSubscribers) {
+      subscriber[_listenerFields.callback](id, eventInfo);
     }
   }
 }
