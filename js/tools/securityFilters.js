@@ -25,22 +25,23 @@ class SecurityFilters { /* exported SecurityFilters*/
     if (!text) { return; }
     let hide = null;
     const blackListShow = _blackListHtmlTagsTopShow;
-    this._allowedHtmlTagList.push({ '<!': [] }); // avoid to have manage comments for now (but we will have to do)
+    // Work on a copy to avoid accumulating duplicates across calls
+    let allowedTagList = [...this._allowedHtmlTagList, { '<!': [] }];
     let textTagList = [...new Set(text.toLowerCase().match(new RegExp('(<[^</])\\w*\\s*', 'g')) || [])].map(x => x.replace('<', '').trim());
     textTagList = textTagList.map(x => TextTools.escapeRegExp(x));
     const allowedFromUserScriptsTagList = textTagList.filter(tag => tag.endsWith('_dp')).map(tag => ({ [tag]: '*' }));
 
     let toBlackListTagList = [...new Set(textTagList.filter(x =>
-      !this._tagListIncludes(this._allowedHtmlTagList, x) && !this._tagListIncludes(allowedFromUserScriptsTagList, x)
+      !this._tagListIncludes(allowedTagList, x) && !this._tagListIncludes(allowedFromUserScriptsTagList, x)
     ) || [])];
     const toBlackListAndShowTagList = [...new Set(toBlackListTagList.filter(x => this._tagListIncludes(blackListShow, x)))];
     const toBlackListAndHideTagList = [...new Set(toBlackListTagList.filter(x => !this._tagListIncludes(blackListShow, x)))];
     hide = false; text = await this._disableTags_async(text, toBlackListAndShowTagList, hide);
     hide = true; text = await this._disableTags_async(text, toBlackListAndHideTagList, hide);
 
-    const toWhiteListTagList = [...new Set(textTagList.filter(x => this._tagListIncludes(this._allowedHtmlTagList, x)) || [])];
+    const toWhiteListTagList = [...new Set(textTagList.filter(x => this._tagListIncludes(allowedTagList, x)) || [])];
     text = await this._fixAllowedTagsFromUserScript(text, allowedFromUserScriptsTagList);
-    text = await this._disableAttributes_async(text, toWhiteListTagList);
+    text = await this._disableAttributes_async(text, toWhiteListTagList, allowedTagList);
     text = await this._applyInlineCssRejection_async(text, toWhiteListTagList);
     return text;
   }
@@ -70,17 +71,17 @@ class SecurityFilters { /* exported SecurityFilters*/
     return text;
   }
 
-  async _disableAttributes_async(text, textTagList) {
+  async _disableAttributes_async(text, textTagList, allowedTagList) {
     if (!textTagList) { return; }
     let textTagListWithAllowedAtt = [...new Set(textTagList.filter(x => {
-      let tagObj = this._allowedHtmlTagList.find(y => Object.keys(y) == x);
+      let tagObj = allowedTagList.find(y => Object.keys(y) == x);
       return (tagObj[x].length != 0);
     }))];
     for (let tag of textTagList) {
       if (!tag) { continue; }
       let regexExtractAtt = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gi;
       if (textTagListWithAllowedAtt.includes(tag)) {
-        let allowedAttList = this._allowedHtmlTagList.find(x => Object.keys(x) == tag)[tag];
+        let allowedAttList = allowedTagList.find(x => Object.keys(x) == tag)[tag];
         let regexExtractTags = new RegExp('<' + tag + '\\b[^>]*>(.*?)', 'gi');
         let textTagWithAttList = text.match(regexExtractTags);
         if (!textTagWithAttList) { continue; }

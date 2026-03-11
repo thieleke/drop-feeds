@@ -153,6 +153,7 @@ class FeedManager { /*exported FeedManager*/
     if (!syncThreshold) { syncThreshold = 0; }
     const maxConcurrent = 5;
     let pending = [];
+    let settled = new Set();
     for (let i = 0; i < feedList.length; i++) {
       let feed = feedList[i];
       let isLast = (i === feedList.length - 1);
@@ -161,11 +162,11 @@ class FeedManager { /*exported FeedManager*/
       }
       else {
         let p = action(feed, false, openNewTabForce, isLast, folderTitle);
-        p.then(() => { p._settled = true; }, () => { p._settled = true; });
+        p.then(() => { settled.add(p); }, () => { settled.add(p); });
         pending.push(p);
         if (pending.length >= maxConcurrent) {
           await Promise.race(pending);
-          pending = pending.filter(pr => !pr._settled);
+          pending = pending.filter(pr => !settled.has(pr));
         }
       }
     }
