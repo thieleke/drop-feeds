@@ -56,7 +56,7 @@ class SecurityFilters { /* exported SecurityFilters*/
   }
 
   _tagListIncludes(tagList, x) {
-    return (tagList.findIndex(e => Object.keys(e) == x)) >= 0;
+    return (tagList.findIndex(e => Object.keys(e)[0] === x)) >= 0;
   }
 
   async _disableTags_async(text, tagToDisableList, hide) {
@@ -74,14 +74,14 @@ class SecurityFilters { /* exported SecurityFilters*/
   async _disableAttributes_async(text, textTagList, allowedTagList) {
     if (!textTagList) { return; }
     let textTagListWithAllowedAtt = [...new Set(textTagList.filter(x => {
-      let tagObj = allowedTagList.find(y => Object.keys(y) == x);
+      let tagObj = allowedTagList.find(y => Object.keys(y)[0] === x);
       return (tagObj[x].length != 0);
     }))];
     for (let tag of textTagList) {
       if (!tag) { continue; }
       let regexExtractAtt = /(\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']?/gi;
       if (textTagListWithAllowedAtt.includes(tag)) {
-        let allowedAttList = allowedTagList.find(x => Object.keys(x) == tag)[tag];
+        let allowedAttList = allowedTagList.find(x => Object.keys(x)[0] === tag)[tag];
         let regexExtractTags = new RegExp('<' + tag + '\\b[^>]*>(.*?)', 'gi');
         let textTagWithAttList = text.match(regexExtractTags);
         if (!textTagWithAttList) { continue; }
