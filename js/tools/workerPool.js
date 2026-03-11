@@ -47,7 +47,14 @@ class WorkerPool { /* exported WorkerPool*/
   }
 
   _startWork(worker, work) {
-    let onCompleteListener1 = ((e) => { work.onComplete(e); });
+    let timeoutId = null;
+    let completed = false;
+    let onCompleteListener1 = ((e) => {
+      if (completed) { return; }
+      completed = true;
+      clearTimeout(timeoutId);
+      work.onComplete(e);
+    });
     let onCompleteListener2 = (() => {
       if (this._disposed) { return; }
       worker.removeEventListener('message', onCompleteListener1);
@@ -57,6 +64,16 @@ class WorkerPool { /* exported WorkerPool*/
     worker.addEventListener('message', onCompleteListener1);
     worker.addEventListener('message', onCompleteListener2);
     worker.postMessage(work.paramArray);
+    timeoutId = setTimeout(() => {
+      if (completed || this._disposed) { return; }
+      completed = true;
+      worker.removeEventListener('message', onCompleteListener1);
+      worker.removeEventListener('message', onCompleteListener2);
+      worker.terminate();
+      let newWorker = new Worker(this._workerUrl);
+      this._workerList.push(newWorker);
+      work.onComplete({ data: work.paramArray[0] });
+    }, 30000);
   }
 }
 
