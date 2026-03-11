@@ -170,7 +170,13 @@ class FeedRenderer { /*exported FeedRenderer*/
     }
     let tooltipText = FeedParser.getItemTooltipText(item, num);
     let tooltip = (tooltipsVisible ? 'title' : 'title1') + '="' + BrowserManager.htmlToText(tooltipText) + '"';
+<<<<<<< Updated upstream
     let htmlItemLine = '<span class="item' + visited + '" ' + tooltip + '" ' + target + ' href="' + TextTools.sanitizeUrl(item.link) + '" num="' + num + '">' + num + '. ' + TextTools.escapeHtml(title) + '<br/></span>';
+=======
+    let safeLink = TextTools.escapeHtml(item.link);
+    let safeTitle = TextTools.escapeHtml(title);
+    let htmlItemLine = '<span class="item' + visited + '" ' + tooltip + ' ' + target + ' href="' + safeLink + '" num="' + num + '">' + num + '. ' + safeTitle + '<br/></span>';
+>>>>>>> Stashed changes
     return htmlItemLine;
   }
 }
