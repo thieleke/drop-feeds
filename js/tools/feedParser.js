@@ -169,7 +169,7 @@ class FeedParser { /*exported FeedParser*/
     feedInfo.isError = isError;
     feedInfo.tagItem = FeedParser._get1stUsedTag(feedText, tagList.ITEM);
     feedInfo.format = FeedParser._getFeedFormat(feedInfo.tagItem, feedText);
-    feedInfo.channel = FeedParser._parseChannelToObj(feedText, feedInfo.tagItem, defaultTitle);
+    feedInfo.channel = await FeedParser._parseChannelToObj_async(feedText, feedInfo.tagItem, defaultTitle);
     feedInfo.itemList = await FeedParser._parseXmlItems_async(feedText, feedInfo.tagItem);
     return feedInfo;
   }
@@ -190,7 +190,7 @@ class FeedParser { /*exported FeedParser*/
     feedInfo.channel = DefaultValues.getDefaultChannelInfo();
     feedInfo.channel.title = jsonFeed.title;
     feedInfo.channel.link = jsonFeed.home_page_url;
-    feedInfo.channel.description = jsonFeed.description;
+    feedInfo.channel.description = jsonFeed.description ? await SecurityFilters.instance.applySecurityFilters_async(jsonFeed.description) : '';
     feedInfo.itemList = await FeedParser._parseJsonItems_async(jsonFeed);
     return feedInfo;
   }
@@ -381,7 +381,7 @@ class FeedParser { /*exported FeedParser*/
     return extractedDateTime;
   }
 
-  static _parseChannelToObj(feedText, tagItem, defaultTitle) {
+  static async _parseChannelToObj_async(feedText, tagItem, defaultTitle) {
     let channel = DefaultValues.getDefaultChannelInfo();
     channel.encoding = FeedParser.getFeedEncoding(feedText);
     let channelText = FeedParser._getChannelText(feedText, tagItem);
@@ -389,7 +389,10 @@ class FeedParser { /*exported FeedParser*/
     channel.title = TextTools.decodeHtml(FeedParser._extractValue(channelText, tagList.TITLE));
     if (!channel.title) { channel.title = defaultTitle; }
     if (!channel.title) { channel.title = channel.link; }
-    channel.description = TextTools.decodeHtml(FeedParser._extractValue(channelText, tagList.DESC));
+    let rawDescription = TextTools.decodeHtml(FeedParser._extractValue(channelText, tagList.DESC));
+    if (rawDescription) {
+      channel.description = await SecurityFilters.instance.applySecurityFilters_async(rawDescription);
+    }
     return channel;
   }
 
@@ -446,7 +449,8 @@ class FeedParser { /*exported FeedParser*/
       item.link = jsonItem.url;
       item.title = jsonItem.title;
       let htmlContent = (TextTools.isNullOrEmpty(jsonItem.html_content) ? '' : jsonItem.html_content);
-      item.description = TextTools.replaceAll(TextTools.replaceAll(htmlContent, '\r\n', '\n'), '\n', '<br/>');
+      let rawDescription = TextTools.replaceAll(TextTools.replaceAll(htmlContent, '\r\n', '\n'), '\n', '<br/>');
+      item.description = rawDescription ? await SecurityFilters.instance.applySecurityFilters_async(rawDescription) : '';
       item.author = jsonItem.author.name;
       let enclosures = [];
       for (let att of jsonItem.attachments) {

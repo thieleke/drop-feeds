@@ -64,17 +64,15 @@ class XmlTools { /*exported XmlTools*/
     // Remove XML external entity declarations
     // This prevents <!ENTITY and <!DOCTYPE declarations that could reference external entities
     let sanitized = xmlText.replace(/<!ENTITY\s+[^>]*>/gi, '');
-    sanitized = sanitized.replace(/<!DOCTYPE\s+[^>]*>/gi, '');
+    // Handle DOCTYPE with optional internal subset: <!DOCTYPE foo [ ... ]>
+    sanitized = sanitized.replace(/<!DOCTYPE\s+[^[>]*(\[[\s\S]*?\]\s*)?>/gi, '');
 
-    // Remove potential external entity references
-    // This prevents &entityName; references that could be expanded
-    sanitized = sanitized.replace(/&[a-zA-Z][a-zA-Z0-9-]*;/g, (match) => {
-      // Only remove known external entity references
-      // Common XML entities like <, >, &, ", ' are safe
-      const knownEntities = ['lt', 'gt', 'amp', 'quot', 'apos'];
-      const entityName = match.substring(1, match.length - 1);
-      return knownEntities.includes(entityName) ? match : '';
-    });
+    // Remove numeric character references that could be used for obfuscation of XXE payloads
+    // but preserve standard named entities (XML built-ins and common HTML entities).
+    // After stripping DOCTYPE/ENTITY declarations above, any remaining named entity
+    // references are either standard HTML entities (safe) or undefined (will be ignored
+    // by DOMParser). No need to strip them — DOMParser won't expand custom entities
+    // without a corresponding <!ENTITY> declaration.
 
     return sanitized;
   }

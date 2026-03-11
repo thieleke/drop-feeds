@@ -1,7 +1,7 @@
 /* global Listener ListenerProviders DefaultValues TextTools WorkerReplace*/
 'use strict';
 const _blackListHtmlTagsTopShow = [{ 'blink': [] }, { 'marquee': [] }];
-const _dangerousBaseTags = ['script', 'iframe', 'object', 'embed', 'form', 'input', 'textarea', 'button', 'select', 'applet', 'link', 'meta', 'base', 'frame', 'frameset'];
+const _dangerousBaseTags = ['script', 'iframe', 'object', 'embed', 'form', 'input', 'textarea', 'button', 'select', 'applet', 'link', 'meta', 'base', 'frame', 'frameset', 'svg', 'math', 'style'];
 class SecurityFilters { /* exported SecurityFilters*/
   static get instance() { return (this._instance = this._instance || new this()); }
 
@@ -132,10 +132,13 @@ class SecurityFilters { /* exported SecurityFilters*/
 
   static _isSafeUrl(url) {
     if (!url) { return true; }
-    let trimmed = url.trim().toLowerCase();
+    // Strip control characters (tabs, newlines, null bytes) that can evade prefix checks
+    /*eslint-disable no-control-regex*/
+    let trimmed = url.replace(/[\x00-\x1f\x7f]/g, '').trim().toLowerCase();
+    /*eslint-enable no-control-regex*/
     // Block dangerous URL schemes
     if (trimmed.startsWith('javascript:') || trimmed.startsWith('vbscript:') ||
-        trimmed.startsWith('data:text/html') || trimmed.startsWith('data:application')) {
+        trimmed.startsWith('data:')) {
       return false;
     }
     return true;

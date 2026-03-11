@@ -15,14 +15,14 @@ class FeedRenderer { /*exported FeedRenderer*/
     let safeUrl = TextTools.sanitizeUrl(url);
     let safeUrlDisplay = TextTools.escapeHtml(url);
     let safeError = TextTools.escapeHtml(error);
-    let feedHtml = USTools.rssHeader(title, url, 'Error');
+    let feedHtml = USTools.rssHeader(safeTitle, safeUrl, 'Error');
     let description = `<table>
     <tr><td>Name: </td><td>` + safeTitle + `</td></tr>
     <tr><td>Url: </td><td><a href="` + safeUrl + '">' + safeUrlDisplay + `</a></td></tr>
     <tr><td></td><td></td></tr>
     <tr><td>Error: </td><td>` + safeError + `</td></tr>
     </table>`;
-    feedHtml += USTools.rssItem('Error: ' + error.split('<br/>')[0], url, new Date(), description);
+    feedHtml += USTools.rssItem('Error: ' + TextTools.escapeHtml(error.split('<br/>')[0]), safeUrl, new Date(), description);
     feedHtml += USTools.rssFooter();
     return feedHtml;
   }
@@ -105,7 +105,7 @@ class FeedRenderer { /*exported FeedRenderer*/
     let error = (isError ? 'error' : '');
     htmlChannel += '    <div class="channelHead ' + error + '">\n';
     if (channel.title) { htmlChannel += '      <h1 class="channelTitle"><a class="channelLink" href="' + TextTools.sanitizeUrl(channel.link) + '">' + TextTools.escapeHtml(channel.title) + '</a></h1>\n'; }
-    if (channel.description) { htmlChannel += '      <p class="channelDescription">' + channel.description + '</p>\n'; } else { htmlChannel += '<p class="channelDescription"/>'; }
+    if (channel.description) { htmlChannel += '      <p class="channelDescription">' + TextTools.escapeHtml(channel.description) + '</p>\n'; } else { htmlChannel += '<p class="channelDescription"/>'; }
     htmlChannel += '    </div>\n';
     return htmlChannel;
   }
@@ -142,7 +142,7 @@ class FeedRenderer { /*exported FeedRenderer*/
     let linkTarget = FeedRendererOptions.instance.itemNewTab ? 'target="_blank" rel="noopener noreferrer"' : '';
     htmlItem += '        <a ' + linkTarget + ' href="' + TextTools.sanitizeUrl(item.link) + '">' + TextTools.escapeHtml(title) + '</a>\n';
     htmlItem += '      </h2>\n';
-    if (item.description) { htmlItem += '      <div class="itemDescription">' + item.description + ' </div>\n'; }
+    if (item.description) { htmlItem += '      <div class="itemDescription">' + TextTools.escapeHtml(item.description) + ' </div>\n'; }
     htmlItem += '      <div class="itemInfo">\n';
     if (item.category) { htmlItem += '        <div class="itemCat">[' + TextTools.escapeHtml(item.category) + ']</div>\n'; }
     if (item.author) { htmlItem += '        <div class="itemAuthor">Posted by ' + TextTools.escapeHtml(item.author) + '</div>\n'; }

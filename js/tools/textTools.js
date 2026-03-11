@@ -148,7 +148,7 @@ class TextTools { /* exported TextTools*/
     try {
       let parsed = new URL(trimmed);
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-        return trimmed;
+        return parsed.href;
       }
     }
     catch (e) {
