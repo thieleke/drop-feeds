@@ -123,7 +123,9 @@ class SecurityFilters { /* exported SecurityFilters*/
   async _applyInlineCssRejection_async(attStyle) {
     let cleanedAttStyle = attStyle;
     //use worker to try to avoid message "Warning: Unresponsive script." (to test set dom.max_script_run_time to 1)
-    await this._rejectedCssFragmentList.map(async filter => cleanedAttStyle = await this._wkRplc.replace_async(attStyle, new RegExp(filter), ''));
+    for (let filter of this._rejectedCssFragmentList) {
+      cleanedAttStyle = await this._wkRplc.replace_async(cleanedAttStyle, new RegExp(filter), '');
+    }
 
     return cleanedAttStyle;
   }
